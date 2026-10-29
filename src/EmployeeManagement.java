@@ -81,12 +81,9 @@ public class EmployeeManagement {
 				
 				System.out.println("Enter New Salary");
 				double salary=sc.nextDouble();
-				
-				ps.setInt(1, empId);
-				ps.setDouble(2, salary);
-				
+				ps.setDouble(1, salary);
+				ps.setInt(2, empId);
 				int rows=ps.executeUpdate();
-				
 				System.out.println(rows+" Employee Salary Updated");
 		}
 	}
@@ -129,8 +126,51 @@ public class EmployeeManagement {
 		try {
 		con = DriverManager.getConnection(url,user,pass);
 		System.out.println("DB CONNECTED SUCCESSFULLY");
+		int choice;
+		
+		do {
+			System.out.println("\n------EMPLOYEE MANAGEMENT-------");
+			System.out.println("1.INSERT EMPLOYEE");
+			System.out.println("2.DISPLAY ALL EMPLOYEES");
+			System.out.println("3.SEARCH EMPLOYEES BY ID");
+			System.out.println("4.UPDATE SALARY");
+			System.out.println("5.DELETE EMPLOYEE");
+			System.out.println("6.FILTER BY SALARY");
+			System.out.println("0.Exit");
+			System.out.println("Enter Choice:");
+			choice=sc.nextInt();
+			
+				switch(choice) {
+				case 1:
+						insertEmployee();break;
+				case 2:
+						displayEmployees();break;
+				case 3:
+						searchEmployee();break;
+				case 4:
+						updateSalary();break;
+				case 5:
+						deleteEmployee();break;
+				case 6:
+						filterBySalary();break;
+				case 0:
+						System.out.println("Exiting");break;
+				default:
+						System.out.println("Invalid Choice");
+				}
+
+		}while(choice!=0);
 		}catch(SQLException e) {
 			e.printStackTrace();
+		}finally {
+			try {
+				if(con!=null && !con.isClosed()) {
+					con.close();
+				}
+			}catch(SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		sc.close();
 		}
 	}
-}
