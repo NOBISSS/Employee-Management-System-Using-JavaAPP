@@ -91,6 +91,39 @@ public class EmployeeManagement {
 		}
 	}
 	
+	//Delete Employee
+	static void deleteEmployee() throws SQLException{
+		String sql="DELETE FROM EMPLOYEES WHERE EMP_ID=?";
+		try(PreparedStatement ps= con.prepareStatement(sql)){
+				System.out.println("Enter Employee ID:");
+				int empId=sc.nextInt();
+				ps.setInt(1, empId);
+				int rows=ps.executeUpdate();
+				
+				System.out.println(rows+" Employee Record Deleted");
+		}
+	}
+	
+	//filtering by minimum salary
+	static void filterBySalary() throws SQLException{
+		String sql="SELECT * FROM EMPLOYEES WHERE SALARY > ?";
+		try(PreparedStatement ps=con.prepareStatement(sql)){
+			System.out.println("Enter Minimum Salary");
+			double salary=sc.nextDouble();
+			
+			ps.setDouble(1, salary);
+			
+			try(ResultSet rs=ps.executeQuery()){
+				while(rs.next()) {
+					System.out.println(
+							rs.getInt("emp_id")+" "+
+							rs.getString("name")+" "+
+							rs.getBigDecimal("salary")
+							);
+				}
+			}
+		}
+	}
 	
 	public static void main(String[] args) {	
 		try {
